@@ -1,0 +1,41 @@
+{% block _category_properties_widget %}
+    {% for id, name in value.old %}
+        <div class="form-group field-text">
+            <div class="col-sm-12">
+                <input type="text" name="category[propertiesNames][old][{{ id }}]" class="form-control"
+                       value="{{ name }}">
+            </div>
+        </div>
+    {% endfor %}
+    <div class="form-group field-text last-prop">
+        <div class="col-sm-12">
+            <input type="text" name="category[propertiesNames][new][]" class="form-control">
+        </div>
+    </div>
+    <button type="button" class="add-parameter btn btn-primary">Добавить параметр</button>
+{% endblock %}
+
+{% block _products_props_widget %}
+    <div class="row">
+        <div class="col-xs-12 props">
+            {% for id, item in value.old %}
+                <div class="form-group field-text">
+                    <label class="col-sm-3 control-label" for="prop-{{ id }}">{{ item.name }}</label>
+                    <div class='col-sm-9'>
+                        <input type="text" id="prop-{{ id }}" name="products[propertiesValues][old][{{ id }}]"
+                               class="form-control" value="{{ item.value }}">
+                    </div>
+                </div>
+            {% endfor %}
+            {% for id, name in value.new %}
+                <div class="form-group field-text">
+                    <label class="col-sm-3 control-label" for="prop-{{ id }}">{{ name }}</label>
+                    <div class='col-sm-9'>
+                        <input type="text" id="prop-{{ id }}" name="products[propertiesValues][new][{{ id }}]"
+                               class="form-control">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

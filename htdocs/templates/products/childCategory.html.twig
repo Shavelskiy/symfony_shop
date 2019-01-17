@@ -1,0 +1,21 @@
+{% extends 'layouts/products.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 p-4">
+                <h5 class="my-4">Выберите категорию</h5>
+                <div class="list-group">
+                    {% for category in categories %}
+                        <a href="{{ path('categoryProducts', {'categoryId': category.id}) }}"
+                           class="list-group-item list-group-item-action">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

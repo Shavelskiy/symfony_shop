@@ -1,0 +1,127 @@
+{% extends 'layouts/products.html.twig' %}
+
+{% block title %}{{ currentCategory.name }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="alert alert-success product-add invisible" role="alert">
+            Товар добавлен в корзину
+        </div>
+        <div class="row">
+            <div class="col-2 p-4">
+                <div class="list-group mb-4">
+                    {% for category in categories %}
+                        <a href="{{ path('categoryProducts', {'categoryId': category.id}) }}"
+                           class="list-group-item list-group-item-action {% if (category.id == currentCategory.id) %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+                <form method="get" name="filter">
+                    <div class="list-group">
+                        {% for id, property in properties %}
+                            <h6 class="list-group-item list-group-item-dark">{{ property.name }}</h6>
+                            {% for value in property.values %}
+                                <label class="checkbox list-group-item"><input class="mr-2"
+                                                                               type="checkbox"
+                                            {% for filterValue in filter[id] %}
+                                                {% if (value == filterValue) %}checked="checked"{% endif %}
+                                            {% endfor %}
+                                                                               name="properties[{{ id }}][{{ value }}]">{{ value }}
+                                </label>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-12 mt-3 text-center">
+                        <button type="submit" class="btn btn-primary">Применить</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-10 p-4">
+                {% if(products|length != 0) %}
+                    {% for product in products %}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <img src="{{ product.picture }}" class="img-fluid" alt="{{ product.name }}"
+                                                 width="150">
+                                        </div>
+                                        <div class="col-8">
+                                            <a href="{{ path('productDetail', {'code': product.code}) }}"><h6
+                                                        class="mb-0">{{ product.name }}</h6></a>
+                                            <div class="mb-3">
+                                                <small>Производитель: <a href="#">{{ product.brand }}</a></small>
+                                            </div>
+                                            <p>{{ product.previewText }}</p>
+                                            <small>Арт. {{ product.code }}</small>
+                                        </div>
+                                        <div class="col-2 pt-3">
+                                            <h6>Цена: {{ product.price }} руб.</h6>
+                                            <div class="form-group row pt-2">
+                                                <label for="kol-{{ product.id }}"
+                                                       class="col-sm-5 col-form-label pr-0">Кол-во:</label>
+                                                <div class="col-sm-4 pl-0">
+                                                    <input id="kol-{{ product.id }}" type="text"
+                                                           class="form-control" value="1">
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-primary add-to-cart"
+                                                    id="{{ product.id }}">Купить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div>Товары не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+        {% if (pageCount > 1) %}
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            {% if (page != 1) %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="{{ path('categoryProducts', {'categoryId': currentCategory.id, 'page': page - 1, 'properties': inputFilter}) }}">Назад</a>
+                                </li>
+                            {% endif %}
+                            {% for i in 1..pageCount %}
+                                <li class="page-item {% if (page == i) %}disabled{% endif %}">
+                                    <a class="page-link"
+                                       href="{{ path('categoryProducts', {'categoryId': currentCategory.id, 'page': i, 'properties': inputFilter}) }}">{{ i }}</a>
+                                </li>
+                            {% endfor %}
+                            {% if (page != pageCount) %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="{{ path('categoryProducts', {'categoryId': currentCategory.id, 'page': page + 1, 'properties': inputFilter}) }}">Вперёд</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var productId, kol;
+        $('.add-to-cart').each(function () {
+            $(this).click(function () {
+                productId = $(this).attr('id');
+                kol = Number($('#kol-' + productId).val());
+                addToCart(productId, kol);
+            });
+        });
+    </script>
+{% endblock %}

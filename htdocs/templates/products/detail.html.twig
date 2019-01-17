@@ -1,0 +1,81 @@
+{% extends 'layouts/products.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-4">
+                <div class="list-group">
+                    {% for category in categories %}
+                        <a href="{{ path('categoryProducts', {'categoryId': category.id}) }}"
+                           class="list-group-item list-group-item-action {% if (category.id == currentCategory.id) %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-10 p-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-5 mb-3">
+                                    <h5 class="card-title mb-0">{{ product.name }}</h5>
+                                    <small>Арт. {{ product.code }}</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <img src="{{ product.picture }}" class="img-fluid" alt="{{ product.name }}"
+                                         width="300">
+                                </div>
+                                <div class="col-6">
+                                    <p>{{ product.detailText }}</p>
+                                </div>
+                                <div class="col-2 pl-5">
+                                    <h6>Цена: {{ product.price }} руб.</h6>
+                                    <div class="form-group row pt-2">
+                                        <label for="kol[{{ product.id }}]"
+                                               class="col-sm-5 col-form-label pr-0">Кол-во:</label>
+                                        <div class="col-sm-5 pl-2">
+                                            <input id="kol-{{ product.id }}" type="text" class="form-control"
+                                                   value="1">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary add-to-cart"
+                                            id="{{ product.id }}">
+                                        Купить
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mt-4">
+                                    <h4 class="mb-4">Характеристики:</h4>
+                                    Бренд: {{ product.brand }}
+                                    {% for property in properties %}
+                                        <br>
+                                        <hr>
+                                        {{ property.property }}: {{ property.value }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var productId, kol;
+        $('.add-to-cart').click(function () {
+            productId = $(this).attr('id');
+            kol = Number($('#kol-' + productId).val());
+            addToCart(productId, kol);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends '@EasyAdmin/default/edit.html.twig' %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: '{{ path('hasProducts') }}',
+                data: {'brandId': {{ _entity_id }}},
+                success: function (data) {
+                    if (data.status == 'success') {
+                        if (!data.delete) {
+                            $('.action-delete').addClass('hidden');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,19 @@
+easy_admin:
+  entities:
+    Brand:
+      class: App\Entity\Brand
+      controller: 'App\Controller\Admin\BrandController'
+      label: 'Бренды'
+      list:
+        fields:
+        - { property: 'name', label: 'Название'}
+        - { property: 'sort', label: 'Сортировка'}
+        - { property: 'activity', label: 'Активность', type: 'boolean'}
+      form:
+        fields:
+        - { property: 'name', label: 'Название'}
+        - { property: 'sort', label: 'Сортировка'}
+        - { property: 'activity', label: 'Активность'}
+      templates:
+        list: 'easy_admin/brand/list.html.twig'
+        edit: 'easy_admin/brand/edit.html.twig'

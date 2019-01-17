@@ -1,0 +1,34 @@
+easy_admin:
+  entities:
+    Products:
+      class: App\Entity\Product
+      controller: 'App\Controller\Admin\ProductController'
+      label: 'Товары'
+      list:
+        fields:
+        - { property: 'picture', type: 'image', label: 'Картинка'}
+        - { property: 'name', label: 'Название'}
+        - { property: 'category', label: 'Категория'}
+        - { property: 'brand', label: 'Бренд'}
+        - { property: 'sort', label: 'Сортировка'}
+        - { property: 'activity', label: 'Активность', type: 'boolean'}
+        - { property: 'price', label: 'Цена'}
+        - { property: 'code', label: 'Артикул'}
+      form:
+        fields:
+        - { type: 'group', css_class: 'col-sm-6', label: 'Общая информация' }
+        - { property: 'name', label: 'Название'}
+        - { property: 'sort', label: 'Сортировка'}
+        - { property: 'activity', label: 'Активность'}
+        - { property: 'category', label: 'Категория'}
+        - { property: 'brand', label: 'Бренд'}
+        - { property: 'price', label: 'Цена'}
+        - { property: 'code', label: 'Код'}
+        - { property: 'pictureFile', label: 'Изображение', type: 'file'}
+        - { property: 'preview_text', label: 'Анонс'}
+        - { property: 'detail_text', label: 'Детальное описание'}
+        - { type: 'group', css_class: 'col-sm-6 properties', label: 'Параметры' }
+        - { property: 'propertiesValues', type_options: { block_name: 'props' }}
+      templates:
+        new: 'easy_admin/products/new.html.twig'
+        edit: 'easy_admin/products/edit.html.twig'

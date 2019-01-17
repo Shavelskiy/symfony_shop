@@ -1,0 +1,19 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var addAlert = $('.product-add');
+        function addToCart(productId, kol) {
+            $.ajax({
+                url: '{{ path('addToCart') }}',
+                data: {'productId': productId, 'kol': kol},
+                success: function (data) {
+                    addAlert.removeClass('invisible');
+
+                    setTimeout(function () { addAlert.addClass('invisible'); }, 2000);
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends '@EasyAdmin/default/new.html.twig' %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('.properties').find('label').addClass('hidden');
+        $('.properties').find('.col-sm-10').removeClass('col-sm-10').addClass('col-sm-12');
+        $('#products_category').empty();
+
+        var category;
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '{{ (path('categorySelect')) }}',
+                success: function (data) {
+                    $('#products_category').append(data.data);
+                }
+            });
+
+            category = $('#products_category').val();
+
+            updateProperties();
+            $('#products_category').change(function () {
+                category = $(this).val();
+                updateProperties();
+            });
+        });
+
+        function updateProperties() {
+            $.ajax({
+                url: '{{ (path('categoryProperties')) }}',
+                data: {'id': category},
+                success: function (data) {
+                    $('.props').empty().append(data.data);
+                }
+            });
+        }
+    </script>
+{% endblock %}
+

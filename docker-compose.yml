@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  webserver:
+    privileged: true
+    build: ./docker/webserver
+    container_name: shop
+    working_dir: /application
+    cap_add:
+    - SYS_ADMIN
+    security_opt:
+    - seccomp:unconfined
+    volumes:
+    - /run
+    - /tmp
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    - ../../:/application/
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    ports:
+    - "8081:80"
+    links:
+    - db:db
+
+  db:
+    image: mysql
+    container_name: mysql
+    ports:
+    - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "shop"
+    volumes:
+    - ../../db/data/:/var/lib/mysql

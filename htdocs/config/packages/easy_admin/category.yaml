@@ -1,0 +1,24 @@
+easy_admin:
+  entities:
+    Category:
+      class: App\Entity\Category
+      controller: 'App\Controller\Admin\CategoryController'
+      label: 'Категории'
+      list:
+        fields:
+        - { property: 'name', label: 'Название'}
+        - { property: 'sort', label: 'Сортировка'}
+        - { property: 'activity', label: 'Активность', type: 'boolean'}
+      form:
+        fields:
+        - { type: 'group', css_class: 'col-sm-6', label: 'Общая информация' }
+        - { property: 'name', label: 'Название'}
+        - { property: 'sort', label: 'Сортировка'}
+        - { property: 'id', label: 'Родительская категория'}
+        - { property: 'activity', label: 'Активность'}
+        - { type: 'group',  css_class: 'col-sm-6 properties', label: 'Параметры'}
+        - { property: 'propertiesNames', type_options: { block_name: 'properties' }}
+      templates:
+        new: 'easy_admin/category/new.html.twig'
+        list: 'easy_admin/category/list.html.twig'
+        edit: 'easy_admin/category/edit.html.twig'

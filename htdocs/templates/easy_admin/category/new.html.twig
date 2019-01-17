@@ -1,0 +1,20 @@
+{% extends '@EasyAdmin/default/new.html.twig' %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('.properties').find('label').addClass('hidden');
+        $('.properties').find('.col-sm-10').removeClass('col-sm-10').addClass('col-sm-12');
+
+        var lastProp,
+            propertyField = $('.last-prop').clone();
+
+        $('.add-parameter').click(function () {
+            lastProp = $('.last-prop');
+            if (lastProp.find('input').val() != '') {
+                lastProp.removeClass('last-prop').after(propertyField.clone());
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center mt-5 px-5 cart-table">
+                {{ cart | raw }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var productId;
+        var table = $('.cart-table');
+        updateTable();
+
+        function updateTable() {
+            $('.remove').each(function () {
+                $(this).click(function () {
+                    productId = $(this).attr('id');
+                    $.ajax({
+                        url: '{{ path('removeFromCart') }}',
+                        data: {'productId': productId},
+                        success: function (data) {
+                            table.empty().append(data);
+                            updateTable();
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+{% endblock %}

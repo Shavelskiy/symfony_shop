@@ -1,0 +1,11 @@
+{% extends '@EasyAdmin/default/new.html.twig' %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('.properties').find('label.col-sm-2').addClass('hidden');
+        $('.properties').find('.col-sm-10').removeClass('col-sm-10').addClass('col-sm-12');
+    </script>
+{% endblock %}
+
